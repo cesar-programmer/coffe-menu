@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+.env.*
+public/koa-caffe-qr.png
+npm-debug.log*
+*.local
