@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Coffee, CupSoda, Leaf, Search, Sparkles } from 'lucide-react';
+import { Coffee, CupSoda, Leaf, Sparkles } from 'lucide-react';
 import { categories, heroImages } from './menuData.js';
 
 function LogoMark() {
@@ -44,23 +44,20 @@ function MenuCard({ item, index }) {
   );
 }
 
-function CategorySection({ category, query }) {
-  const filteredItems = category.items.filter((item) => {
-    const target = `${item.name} ${item.description} ${item.badge || ''}`.toLowerCase();
-    return target.includes(query.toLowerCase());
-  });
-
-  if (!filteredItems.length) return null;
-
+function CategorySection({ category }) {
   return (
     <section id={category.id} className="category-section">
       <div className="section-heading">
-        <span>{category.eyebrow}</span>
-        <h2>{category.label}</h2>
-        <p>{category.description}</p>
+        <div className="section-heading__plate">
+          <div>
+            <span className="section-eyebrow">{category.eyebrow}</span>
+            <h2>{category.label}</h2>
+            <p>{category.description}</p>
+          </div>
+        </div>
       </div>
       <div className="menu-grid">
-        {filteredItems.map((item, index) => (
+        {category.items.map((item, index) => (
           <MenuCard key={item.name} item={item} index={index} />
         ))}
       </div>
@@ -70,7 +67,6 @@ function CategorySection({ category, query }) {
 
 export default function App() {
   const [activeCategory, setActiveCategory] = useState('casa');
-  const [query, setQuery] = useState('');
 
   const activeCategories = useMemo(() => {
     if (activeCategory === 'todo') return categories;
@@ -130,18 +126,13 @@ export default function App() {
           <div>
             <span className="script-line">Carta</span>
             <h2>Elige tu antojo</h2>
-            <p>Filtra por categoria o busca directo lo que se te antoja.</p>
+            <p>Las secciones estan separadas por bloques elevados para que encuentres rapido tu bebida.</p>
           </div>
-          <label className="search-box">
-            <Search size={17} />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar matcha, latte, foam..." />
-          </label>
         </div>
 
         <div className="category-tabs glass" role="tablist" aria-label="Categorias del menu">
           <button className={activeCategory === 'todo' ? 'active' : ''} onClick={() => setActiveCategory('todo')} type="button">
             <span>Todo</span>
-            <small>{categories.reduce((total, category) => total + category.items.length, 0)}</small>
           </button>
           {categories.map((category) => (
             <button
@@ -151,13 +142,12 @@ export default function App() {
               type="button"
             >
               <span>{category.label}</span>
-              <small>{category.items.length}</small>
             </button>
           ))}
         </div>
 
         {activeCategories.map((category) => (
-          <CategorySection key={category.id} category={category} query={query} />
+          <CategorySection key={category.id} category={category} />
         ))}
 
         <aside className="note-card">
@@ -168,7 +158,6 @@ export default function App() {
 
       <footer className="footer">
         <LogoMark />
-        <p>Menu SPA listo para GitHub Pages y acceso por QR.</p>
       </footer>
     </main>
   );
