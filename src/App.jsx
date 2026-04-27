@@ -1,12 +1,20 @@
 import { useMemo, useState } from 'react';
-import { Coffee, CupSoda, Leaf, Sparkles } from 'lucide-react';
+import { Coffee, Leaf, Sparkles } from 'lucide-react';
 import { categories, heroImages } from './menuData.js';
 
 function LogoMark() {
   return (
     <div className="logo-mark" aria-label="Koa Caffe">
       <span>K</span>
-      <span className="pear" />
+      <svg className="pear" viewBox="0 0 72 86" aria-hidden="true" focusable="false">
+        <path className="pear-stem" d="M39 12c4.7-7.5 11.8-8.8 18.7-6.9" />
+        <path className="pear-leaf" d="M40.8 10.8c7.3-2.6 13.3-.9 17.6 5.1-6.9 3.3-13 1.5-17.6-5.1Z" />
+        <path
+          className="pear-body"
+          d="M36.3 15.3c-4.8 0-8.2 3.5-9.3 8.4-.8 3.4-2.7 6.1-5.5 8.4C13.1 39 9.8 48.8 12.2 59.4 15.1 72.2 25 80.3 36 80.3s20.9-8.1 23.8-20.9C62.2 48.8 58.9 39 50.5 32.1c-2.8-2.3-4.7-5-5.5-8.4-1.1-4.9-4.4-8.4-8.7-8.4Z"
+        />
+        <path className="pear-highlight" d="M25.3 35.9c-4.1 4.9-5.5 11.7-3.7 18.3 1.8 6.5 6.1 11.3 11.2 13" />
+      </svg>
       <span>A</span>
       <small>Caffe</small>
     </div>
@@ -34,6 +42,11 @@ function MenuCard({ item, index }) {
   return (
     <article className="menu-card" style={{ '--delay': `${index * 60}ms` }}>
       <span className="card-orb" aria-hidden="true" />
+      {item.image ? (
+        <div className="menu-card__image">
+          <img src={item.image} alt={item.name} loading="lazy" />
+        </div>
+      ) : null}
       <div className="menu-card__top">
         <h3>{item.name}</h3>
         {item.badge ? <span className="badge">{item.badge}</span> : null}
@@ -108,8 +121,6 @@ export default function App() {
           <div className="hero-visual" aria-label="Fotos de referencia de Koa Caffe">
             <div className="device-frame">
               <img src={heroImages[0]} alt="Detalle visual de Koa Caffe" />
-              <div className="floating-chip chip-top"><Sparkles size={14} /> Especiales</div>
-              <div className="floating-chip chip-bottom"><CupSoda size={14} /> Frio / Caliente</div>
             </div>
             <div className="mini-photo left">
               <img src={heroImages[1]} alt="Menu especial de Koa Caffe" />
